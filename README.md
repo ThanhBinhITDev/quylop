@@ -38,4 +38,4 @@ Dự án được thiết kế với cấu trúc dữ liệu chặt chẽ bao g�
 ## ⚙️ Cài đặt và Chạy dự án
 1. **Clone dự án:**
    ```bash
-   git clone [https://github.com/yourusername/class-manager.git](https://github.com/yourusername/class-manager.git)
+   git clone https://github.com/ThanhBinhITDev/quylop.git
