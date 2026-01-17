@@ -22,9 +22,9 @@ Dự án được tạo ra để giải quyết nỗi lo của các bạn lớp 
 - **Trạng thái công việc:** Theo dõi tiến độ từ lúc bắt đầu đến khi hoàn thành.
 
 ## 🛠 Công nghệ sử dụng
-- **Backend:** Node.js, Express.js.
-- **Database:** MongoDB Atlas (NoSQL Cloud).
-- **Giao diện:** HTML5, CSS3 (Tailwind CSS), JavaScript ES6.
+- **Backend:** PHP (Framework Laravel).
+- **Database:** SQL (MySQL/MariaDB hoặc SQL Server).
+- **Giao diện:** HTML5, CSS3 (Tailwind CSS), JavaScript.
 - **Sơ đồ:** Mermaid.js & DBML.
 
 ## 🗄 Cấu trúc Cơ sở dữ liệu (ERD)
