@@ -52,7 +52,23 @@ class FundController extends Controller
      */
     public function show($id)
     {
-        //
+        $fund = DB::table('funds')->where('id', $id)->first();
+        if (!$fund) {
+            return redirect()->route('admin.funds.index')->with('error', 'Quỹ không tồn tại!');
+        }
+
+        // Lay danh sach sinh vien (role = user hoac tat ca tru admin neu muon)
+        // O day gia su lay tat ca users tru admin
+        $students = DB::table('users')->where('role', '!=', 'admin')->get();
+
+        // Lay danh sach da dong cho quy nay (keyBy user_id de de truy cap)
+        $contributions = DB::table('fund_contributions')
+            ->where('fund_id', $id)
+            ->select('user_id', 'status', 'amount')
+            ->get()
+            ->keyBy('user_id');
+
+        return view('admin.funds.show', compact('fund', 'students', 'contributions'));
     }
 
     /**
@@ -87,5 +103,43 @@ class FundController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function contribute(Request $request, $fundId, $userId)
+    {
+        $fund = DB::table('funds')->where('id', $fundId)->first();
+        if (!$fund)
+            return back()->with('error', 'Quỹ không tồn tại');
+
+        // Lay so tien tu request hoac mac dinh cua quy
+        $amount = $request->input('amount', $fund->amount);
+
+        // Kiem tra xem da co ban ghi chua
+        $exists = DB::table('fund_contributions')
+            ->where('fund_id', $fundId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($exists) {
+            // Neu co roi thi update status va amount
+            DB::table('fund_contributions')
+                ->where('id', $exists->id)
+                ->update([
+                    'status' => 'paid',
+                    'amount' => $amount,
+                    'updated_at' => now()
+                ]);
+        } else {
+            // Tao moi
+            DB::table('fund_contributions')->insert([
+                'fund_id' => $fundId,
+                'user_id' => $userId,
+                'amount' => $amount,
+                'status' => 'paid',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        return back()->with('success', 'Đã xác nhận đóng tiền thành công!');
     }
 }

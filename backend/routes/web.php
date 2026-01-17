@@ -29,4 +29,5 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('funds', \App\Http\Controllers\FundController::class);
+    Route::post('funds/{fund}/contribute/{user}', [\App\Http\Controllers\FundController::class, 'contribute'])->name('funds.contribute');
 });
