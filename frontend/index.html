@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quỹ Lớp - Minh Bạch Tài Chính Lớp Học</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        danger: '#EF4444',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path>
+                        <path fill-rule="evenodd"
+                            d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-xl font-bold text-gray-800">Quỹ Lớp</span>
+                </div>
+                <a href="pages/login.html"
+                    class="bg-primary hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition duration-200">
+                    Đăng nhập Admin
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-500 to-blue-600 text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Minh Bạch Tài Chính Lớp Học</h1>
+            <p class="text-xl text-blue-100 mb-8">Quản lý quỹ lớp hiện đại, minh bạch và dễ dàng</p>
+        </div>
+    </section>
+
+    <!-- Balance Card -->
+    <section class="container mx-auto px-4 -mt-10">
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Số dư hiện tại -->
+                <div class="bg-gradient-to-br from-green-400 to-green-600 rounded-xl p-6 text-white">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-green-100">Số dư hiện tại</span>
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z">
+                            </path>
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-bold" id="currentBalance">0 đ</div>
+                </div>
+
+                <!-- Tổng thu -->
+                <div class="bg-white border-2 border-blue-200 rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-gray-600">Tổng thu</span>
+                        <svg class="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-bold text-blue-600" id="totalIncome">0 đ</div>
+                </div>
+
+                <!-- Tổng chi -->
+                <div class="bg-white border-2 border-red-200 rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-gray-600">Tổng chi</span>
+                        <svg class="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-bold text-red-600" id="totalExpense">0 đ</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Các khoản đang thu -->
+    <section class="container mx-auto px-4 mb-8">
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">📋 Các khoản đang thu</h2>
+                <span class="text-sm text-gray-500">Cập nhật: <span id="lastUpdate">-</span></span>
+            </div>
+            <div id="activeFunds" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Sẽ được load từ API -->
+                <div class="text-center py-8 text-gray-500 col-span-2">
+                    <p>Đang tải dữ liệu...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Xem danh sách & Thanh toán -->
+    <div id="paymentModal"
+        class="fixed inset-0 bg-black bg-opacity-50 z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="p-6 border-b flex justify-between items-center bg-gray-50">
+                <div>
+                    <h3 id="modalFundTitle" class="text-xl font-bold text-gray-800 italic">Tên Quỹ</h3>
+                    <p id="modalFundDesc" class="text-sm text-gray-500 italic">Mô tả quỹ</p>
+                </div>
+                <button onclick="closeModal()"
+                    class="text-gray-400 hover:text-gray-600 transition text-2xl">&times;</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6">
+                <!-- Thông tin thanh toán (Chuyển khoản) -->
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r-lg">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-bold text-blue-800">Hướng dẫn đóng tiền Online</h4>
+                            <p class="text-xs text-blue-700 mt-1 italic">Vui lòng chuyển khoản đúng số tiền và nội dung
+                                bên dưới để Admin dễ xác nhận.</p>
+                            <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                                <div class="bg-white p-3 rounded border border-blue-200">
+                                    <p>🏛 Ngân hàng: <strong>MB Bank</strong></p>
+                                    <p>👤 Chủ TK: <strong>Thanh Bình IT (Lớp trưởng)</strong></p>
+                                    <p>🔢 Số TK: <strong>0345 678 999</strong></p>
+                                </div>
+                                <div class="bg-white p-3 rounded border border-blue-200">
+                                    <p>💰 Số tiền: <strong id="modalAmountText" class="text-red-600">0 đ</strong></p>
+                                    <p>📝 Nội dung: <strong id="modalContentText" class="text-blue-600 italic">DONGQUY
+                                            [Mã SV] [Tên Quỹ]</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-bold text-gray-700">🔍 Danh sách đóng tiền</h4>
+                    <div class="text-xs text-gray-500">Tiến độ: <span id="modalProgressText"
+                            class="font-bold text-primary">0/0</span></div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 sticky top-0">
+                            <tr class="text-xs font-bold text-gray-500 uppercase border-b">
+                                <th class="p-3">Sinh viên</th>
+                                <th class="p-3">Mã SV</th>
+                                <th class="p-3">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modalStudentList" class="divide-y divide-gray-100">
+                            <!-- JS load -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="p-4 border-t bg-gray-50 text-right">
+                <button onclick="closeModal()"
+                    class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Giao dịch gần đây -->
+    <section class="container mx-auto px-4 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Người vừa đóng tiền -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">💰 Người vừa đóng tiền</h2>
+                <div id="recentTransactions" class="space-y-3">
+                    <p class="text-gray-500 text-center py-4">Chưa có giao dịch nào</p>
+                </div>
+            </div>
+
+            <!-- Báo cáo chi tiêu -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">💳 Báo cáo chi tiêu</h2>
+                <div id="recentExpenses" class="space-y-3">
+                    <p class="text-gray-500 text-center py-4">Chưa có khoản chi nào</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2026 Quỹ Lớp - Hệ thống quản lý tài chính lớp học</p>
+            <p class="text-gray-400 text-sm mt-2">Được xây dựng với ❤️ cho sự minh bạch</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

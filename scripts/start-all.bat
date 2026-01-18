@@ -1,6 +1,6 @@
 @echo off
 echo ======================================================
-echo   DANG KHOI DONG SERVER QUY LOP (LARAVEL)
+echo   KHOI DONG SERVER QUY LOP (LARAVEL)
 echo ======================================================
 echo.
 
@@ -17,7 +17,7 @@ if %errorlevel% neq 0 (
 )
 
 :: Di chuyen vao thu muc backend va chay server
-cd backend
+cd ..\backend
 echo Dang chay lenh: php artisan serve...
 echo Truy cap trang web tai: http://localhost:8000
 echo.

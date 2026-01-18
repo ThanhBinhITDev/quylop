@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Thu Quỹ - Quỹ Lớp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#3B82F6', secondary: '#10B981', danger: '#EF4444' }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+    <!-- Sidebar (Same as Dashboard) -->
+    <aside class="w-64 bg-gray-800 text-white flex-shrink-0 flex flex-col hidden md:flex">
+        <div class="p-6">
+            <div class="flex items-center space-x-3">
+                <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path>
+                    <path fill-rule="evenodd"
+                        d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-xl font-bold">Admin Panel</span>
+            </div>
+        </div>
+        <nav class="flex-1 px-4 space-y-2 py-4">
+            <a href="dashboard.html"
+                class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-700 hover:text-white transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                    </path>
+                </svg>
+                <span>Tổng quan</span>
+            </a>
+            <a href="funds.html" class="flex items-center space-x-3 bg-gray-900 px-4 py-3 rounded-lg text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                    </path>
+                </svg>
+                <span>Quản lý Quỹ thu</span>
+            </a>
+        </nav>
+        <div class="p-4 border-t border-gray-700">
+            <button onclick="handleLogout()"
+                class="flex items-center space-x-3 w-full px-4 py-3 rounded-lg text-red-400 hover:bg-red-500 hover:text-white transition">
+                <span>Đăng xuất</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto">
+        <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center sticky top-0 z-30">
+            <h2 class="text-xl font-bold text-gray-800">Quản lý Thu Quỹ (10k/Tuần)</h2>
+            <button onclick="createWeeklyFund()"
+                class="bg-primary text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:bg-blue-600 transition">
+                + Tạo quỹ tuần mới
+            </button>
+        </header>
+
+        <div class="p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Danh sách các tuần -->
+                <div class="lg:col-span-1 bg-white rounded-xl shadow-sm border border-gray-100 p-6 h-fit">
+                    <h3 class="font-bold text-gray-800 mb-4">Lịch sử các tuần</h3>
+                    <div id="fundList" class="space-y-3">
+                        <!-- Loading -->
+                        <p class="text-gray-500 text-sm">Đang tải...</p>
+                    </div>
+                </div>
+
+                <!-- Danh sách sinh viên và trạng thái đóng tiền -->
+                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div id="selectedFundTitle">
+                            <h3 class="font-bold text-gray-800 text-lg">Chi tiết thu quỹ</h3>
+                            <p class="text-sm text-gray-500">Vui lòng chọn một tuần bên trái</p>
+                        </div>
+                        <div id="fundStats" class="hidden text-right">
+                            <p class="text-xs text-gray-500">Tiến độ: <span id="progressText"
+                                    class="font-bold text-primary">0%</span></p>
+                            <div class="w-32 h-2 bg-gray-100 rounded-full mt-1">
+                                <div id="progressBar" class="h-full bg-primary rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="text-xs font-semibold text-gray-500 uppercase tracking-wider border-b">
+                                    <th class="pb-3">Học sinh</th>
+                                    <th class="pb-3">Mã SV</th>
+                                    <th class="pb-3">Trạng thái</th>
+                                    <th class="pb-3 text-right">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentList" class="divide-y divide-gray-100">
+                                <!-- Loading hoặc Empty -->
+                                <tr>
+                                    <td colspan="4" class="py-10 text-center text-gray-500 italic">Chọn tuần để xem danh
+                                        sách</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/funds.js"></script>
+</body>
+
+</html>
