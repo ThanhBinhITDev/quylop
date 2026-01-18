@@ -115,25 +115,65 @@ window.CLASS_FUND_COMPONENTS = {
                 </div>
 
                 <div class="flex-1 overflow-y-auto p-6 bg-white">
-                    <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mb-8 rounded-r-xl shadow-sm">
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 mt-1">
-                                <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                            <div class="ml-4 flex-1">
-                                <h4 class="text-sm font-bold text-blue-800 uppercase tracking-wider">Hướng dẫn đóng tiền Online</h4>
-                                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="bg-white p-4 rounded-xl border border-blue-100 space-y-3 shadow-sm">
-                                        <div class="flex justify-between border-b pb-2 text-xs"><span class="text-gray-400 italic">Ngân hàng</span><strong class="text-gray-700">MB Bank</strong></div>
-                                        <div class="flex justify-between border-b pb-2 text-xs"><span class="text-gray-400 italic">Số TK</span><strong class="text-gray-700">0345 678 999</strong></div>
-                                        <div class="flex justify-between border-b pb-2 text-xs"><span class="text-gray-400 italic">Số tiền</span><strong id="modalAmountText" class="text-red-500">0 đ</strong></div>
-                                        <div class="flex justify-between text-xs"><span class="text-gray-400 italic">Nội dung</span><strong id="modalContentText" class="text-blue-600 font-mono">DONGQUY</strong></div>
+                    <!-- Khu vực thanh toán -->
+                    <div id="paymentInstructions" class="bg-blue-50 border-l-4 border-blue-500 p-5 mb-8 rounded-r-xl shadow-sm animate-fade-in">
+                        <div class="flex flex-col md:flex-row gap-6 sticky top-0 bg-blue-50 z-10">
+                            <div class="flex-1">
+                                <h4 class="text-sm font-bold text-blue-800 uppercase tracking-widest mb-4 flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Thông tin chuyển khoản
+                                </h4>
+                                <div class="space-y-4">
+                                    <!-- Chủ tài khoản -->
+                                    <div class="bg-white p-3 rounded-xl border border-blue-100 flex justify-between items-center group">
+                                        <div>
+                                            <p class="text-[10px] text-gray-400 uppercase font-bold">Chủ tài khoản</p>
+                                            <p id="modalAccountName" class="font-bold text-gray-700">NGUYEN THANH BINH</p>
+                                        </div>
+                                        <button onclick="copyText('modalAccountName', 'Tên chủ TK')" class="text-blue-500 hover:text-blue-700 p-2 rounded-lg hover:bg-blue-50 transition opacity-0 group-hover:opacity-100">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m3 7h3m-3 4h3m-6-4h1v1H9v-1zm0 4h1v1H9v-1z"></path></svg>
+                                        </button>
                                     </div>
-                                    <div class="bg-white p-3 rounded-xl border border-blue-100 flex flex-col items-center justify-center text-center shadow-sm">
-                                        <img id="vietQrImg" src="" alt="VietQR" class="w-32 h-32 object-contain border p-2 rounded-lg mb-2">
-                                        <span class="text-[9px] text-gray-400 italic">Quét mã VietQR để thanh toán tự động</span>
+                                    <!-- Số tài khoản -->
+                                    <div class="bg-white p-3 rounded-xl border border-blue-100 flex justify-between items-center group">
+                                        <div>
+                                            <p class="text-[10px] text-gray-400 uppercase font-bold">Số TK - MB Bank</p>
+                                            <p id="modalAccountNo" class="font-bold text-gray-700">0345 678 999</p>
+                                        </div>
+                                        <button onclick="copyText('modalAccountNo', 'Số tài khoản')" class="text-blue-500 hover:text-blue-700 p-2 rounded-lg hover:bg-blue-50 transition opacity-0 group-hover:opacity-100">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m3 7h3m-3 4h3m-6-4h1v1H9v-1zm0 4h1v1H9v-1z"></path></svg>
+                                        </button>
+                                    </div>
+                                    <!-- Số tiền -->
+                                    <div class="bg-white p-3 rounded-xl border border-blue-100 flex justify-between items-center group">
+                                        <div>
+                                            <p class="text-[10px] text-gray-400 uppercase font-bold">Số tiền cần đóng</p>
+                                            <p id="modalAmountValue" class="font-bold text-red-500 text-lg">0 đ</p>
+                                        </div>
+                                        <button onclick="copyText('modalAmountValue', 'Số tiền')" class="text-blue-500 hover:text-blue-700 p-2 rounded-lg hover:bg-blue-50 transition opacity-0 group-hover:opacity-100">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m3 7h3m-3 4h3m-6-4h1v1H9v-1zm0 4h1v1H9v-1z"></path></svg>
+                                        </button>
+                                    </div>
+                                    <!-- Nội dung -->
+                                    <div class="bg-white p-3 rounded-xl border border-blue-100 flex justify-between items-center group border-2 border-dashed border-blue-300">
+                                        <div>
+                                            <p class="text-[10px] text-blue-500 uppercase font-bold">Nội dung chuyển khoản (Bắt buộc)</p>
+                                            <p id="modalContentValue" class="font-bold text-blue-600 font-mono tracking-wider">DONGQUY</p>
+                                        </div>
+                                        <button onclick="copyText('modalContentValue', 'Nội dung')" class="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition shadow-md">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m3 7h3m-3 4h3m-6-4h1v1H9v-1zm0 4h1v1H9v-1z"></path></svg>
+                                        </button>
                                     </div>
                                 </div>
+                                <div class="mt-4 p-3 bg-white rounded-lg border border-blue-100 flex items-center space-x-2 animate-pulse">
+                                    <span class="flex h-2 w-2 rounded-full bg-blue-500"></span>
+                                    <p class="text-[10px] text-gray-500 italic">Chọn tên bạn bên dưới để nhận mã QR cá nhân hóa!</p>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border border-blue-100 flex flex-col items-center justify-center text-center shadow-lg w-full md:w-64">
+                                <img id="vietQrImg" src="" alt="VietQR" class="w-48 h-48 object-contain mb-3 hover:scale-105 transition duration-300">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Quét mã để đóng quỹ</span>
+                                <div id="personalTag" class="mt-2 hidden px-3 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full">QR Cá nhân của: <span id="personalName"></span></div>
                             </div>
                         </div>
                     </div>

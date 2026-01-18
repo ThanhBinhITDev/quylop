@@ -26,12 +26,12 @@ async function loadMembers() {
 
         container.innerHTML = members.map(m => `
             <tr class="hover:bg-gray-50 transition border-b">
-                <td class="p-4">
+                <td class="p-4 cursor-pointer" onclick="openMemberQr(${JSON.stringify(m).replace(/"/g, '&quot;')})">
                     <div class="flex items-center space-x-3">
                         <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">
                             ${m.name.charAt(0).toUpperCase()}
                         </div>
-                        <span class="font-semibold text-gray-800">${m.name}</span>
+                        <span class="font-semibold text-gray-800 hover:text-primary transition">${m.name}</span>
                     </div>
                 </td>
                 <td class="p-4 text-sm font-medium text-gray-600">${m.student_code}</td>
@@ -42,7 +42,10 @@ async function loadMembers() {
                         ${m.role === 'admin' ? 'Admin' : 'Sinh viên'}
                     </span>
                 </td>
-                <td class="p-4 text-right space-x-1">
+                <td class="p-4 text-right flex items-center justify-end space-x-1">
+                    <button onclick="openMemberQr(${JSON.stringify(m).replace(/"/g, '&quot;')})" class="p-2 text-secondary hover:text-green-600 transition" title="Xem mã QR">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h2M4 8h12m4 0h2M4 16h12m4 0h2M4 20h12m4 0h2"></path></svg>
+                    </button>
                     <button onclick="viewMemberHistory(${m.id}, '${m.name}')" class="p-2 text-primary hover:text-blue-600 transition" title="Lịch sử đóng tiền">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h1v1H9v-1zm0 4h1v1H9v-1z"></path></svg>
                     </button>
@@ -193,6 +196,59 @@ async function toggleQuickPay(fundId, userId, userName, checkbox) {
     } finally {
         checkbox.disabled = false;
     }
+}
+
+function openMemberQr(m) {
+    document.getElementById('qrMemberName').textContent = m.name;
+    document.getElementById('qrMemberCode').textContent = m.student_code;
+
+    // Generate VietQR for this member (general pay without specific amount)
+    const bankId = 'MB';
+    const accountNo = '0345678999';
+    const accountName = 'NGUYEN THANH BINH';
+    const description = `DONGQUY ${m.student_code}`;
+    const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?addInfo=${encodeURIComponent(description)}&accountName=${encodeURIComponent(accountName)}`;
+
+    document.getElementById('memberQrImg').src = qrUrl;
+    document.getElementById('qrModal').classList.remove('hidden');
+}
+
+function closeQrModal() {
+    document.getElementById('qrModal').classList.add('hidden');
+}
+
+function printQr() {
+    const name = document.getElementById('qrMemberName').textContent;
+    const code = document.getElementById('qrMemberCode').textContent;
+    const qrSrc = document.getElementById('memberQrImg').src;
+
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>In mã QR - ${name}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+                    .card { border: 2px solid #333; padding: 40px; border-radius: 20px; text-align: center; }
+                    img { width: 300px; height: 300px; }
+                    h1 { margin: 20px 0 10px 0; }
+                    p { font-size: 20px; color: #666; }
+                </style>
+            </head>
+            <body>
+                <div class="card">
+                    <img src="${qrSrc}">
+                    <h1>${name}</h1>
+                    <p>${code}</p>
+                    <p style="font-size: 14px; margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 10px;">QUÉT ĐỂ ĐÓNG QUỸ LỚP</p>
+                </div>
+                <script>
+                    window.onload = () => { window.print(); window.close(); }
+                </script>
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
 }
 
 function handleLogout() {

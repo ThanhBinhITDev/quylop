@@ -58,3 +58,8 @@ File này được tạo ra theo yêu cầu của bạn để ghi lại toàn b�
 - **Lỗi:** "Lỗi khi tải thành phần" (CORS/Fetch error) khi mở file trực tiếp bằng giao thức `file://`.
 - **Nguyên nhân:** Trình duyệt bảo mật chặn `fetch()` file cục bộ.
 - **Cách Fix:** Chuyển toàn bộ mã nguồn HTML của các component vào file JavaScript trung tâm `js/components.js`. Sử dụng biến `window.CLASS_FUND_COMPONENTS` để nạp trực tiếp mà không cần dùng `fetch()`. Kết quả: Trang web chạy mượt mà ngay cả khi mở file thủ công từ ổ cứng.
+
+**4. Tính năng QR Cá nhân (Personalized QR):**
+- **Mã QR định danh:** Mỗi sinh viên giờ đây có một mã QR riêng biệt. Khi bấm vào tên hoặc biểu tượng QR trong danh sách, một Popup sẽ hiện ra.
+- **Tự động điền nội dung:** Mã QR được tích hợp VietQR, tự động điền số tài khoản Admin và nội dung chuyển khoản theo cấu trúc: `DONGQUY [Mã SV]`.
+- **Hỗ trợ In ấn:** Thêm tính năng "In Mã QR" để tạo bản in đẹp mắt, giúp sinh viên có thể dán vào thẻ hoặc bàn học để đóng tiền nhanh.
