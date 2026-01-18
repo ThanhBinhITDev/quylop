@@ -136,3 +136,46 @@ input:checked+.slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+/* Sidebar Responsive & UI */
+.nav-link.active {
+    background-color: #3b82f6;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.nav-link.active svg {
+    color: white !important;
+}
+
+#sidebar.show {
+    transform: translateX(0);
+}
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-blur: 4px;
+    z-index: 45;
+    display: none;
+}
+
+.sidebar-overlay.show {
+    display: block;
+}
+
+/* Glassmorphism */
+.glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    .responsive-table {
+        display: block;
+        overflow-x: auto;
+    }
+}

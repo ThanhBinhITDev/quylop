@@ -18,38 +18,52 @@ window.CLASS_FUND_COMPONENTS = {
     `,
 
     hero: `
-        <section class="bg-gradient-to-r from-blue-500 to-blue-600 text-white py-20 px-4">
-            <div class="container mx-auto text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-fade-in-up">Minh Bạch Tài Chính Lớp Học</h1>
-                <p class="text-xl text-blue-100 mb-8 animate-fade-in-up delay-200">Hệ thống quản lý hiện đại, công khai và chuyên nghiệp</p>
+        <section class="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 md:py-32 px-4 overflow-hidden">
+            <!-- Decorative circles -->
+            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-blue-400/20 rounded-full blur-3xl"></div>
+            
+            <div class="container mx-auto text-center relative z-10">
+                <div class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold uppercase tracking-widest text-blue-100 mb-6 border border-white/10 animate-fade-in-up">
+                    Hệ thống quản lý tài chính 4.0
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-6 animate-fade-in-up tracking-tight leading-tight">Minh Bạch Tài Chính <br class="hidden md:block"><span class="text-blue-300">Lớp Học</span></h1>
+                <p class="text-lg md:text-xl text-blue-100/80 mb-10 max-w-2xl mx-auto animate-fade-in-up delay-200">Nền tảng giúp lớp trưởng quản lý quỹ lớp chuyên nghiệp, tự động hóa mã QR và báo cáo chi tiêu thời gian thực.</p>
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 animate-fade-in-up delay-300">
+                    <a href="#funds-root" class="w-full sm:w-auto px-8 py-4 bg-white text-blue-600 rounded-2xl font-bold hover:bg-blue-50 transition shadow-xl shadow-blue-900/20">🛒 Xem các khoản đóng</a>
+                    <a href="pages/login.html" class="w-full sm:w-auto px-8 py-4 bg-blue-500/20 backdrop-blur-md text-white border border-white/20 rounded-2xl font-bold hover:bg-white/10 transition">🛠 Cổng Admin</a>
+                </div>
             </div>
         </section>
     `,
 
     stats: `
-        <section class="container mx-auto px-4 -mt-10">
-            <div class="bg-white rounded-2xl shadow-xl p-8 mb-8 animate-fade-in-up delay-300">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-gradient-to-br from-green-400 to-green-600 rounded-xl p-6 text-white card-hover shadow-lg shadow-green-100">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-green-500 bg-white bg-opacity-90 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Số dư thực tế</span>
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"></path><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"></path></svg>
+        <section class="container mx-auto px-4 -mt-12 mb-12 relative z-20">
+            <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-blue-900/10 p-4 md:p-8 animate-fade-in-up delay-400 border border-white/50">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+                    <!-- Card 1 -->
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 text-white shadow-lg shadow-green-200/50 card-hover group cursor-pointer">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-[10px] font-bold uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full">Số dư thực tế</span>
+                            <div class="p-2 bg-white/10 rounded-lg group-hover:scale-110 transition"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
                         </div>
-                        <div class="text-3xl font-bold" id="currentBalance">0 đ</div>
+                        <h3 class="text-3xl font-black tracking-tight" id="currentBalance">0 đ</h3>
                     </div>
-                    <div class="bg-white border-2 border-blue-50 rounded-xl p-6 card-hover shadow-sm">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-500 text-xs font-bold uppercase">Tổng đã thu</span>
-                            <div class="p-2 bg-blue-50 rounded-lg text-blue-500"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"></path></svg></div>
+                    <!-- Card 2 -->
+                    <div class="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm card-hover group cursor-pointer hover:border-blue-200 transition">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Đã thu (Học kỳ)</span>
+                            <div class="p-2 bg-blue-50 text-blue-500 rounded-lg group-hover:bg-blue-500 group-hover:text-white transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path></svg></div>
                         </div>
-                        <div class="text-3xl font-bold text-blue-600" id="totalIncome">0 đ</div>
+                        <h3 class="text-3xl font-black tracking-tight text-slate-800" id="totalIncome">0 đ</h3>
                     </div>
-                    <div class="bg-white border-2 border-red-50 rounded-xl p-6 card-hover shadow-sm">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-500 text-xs font-bold uppercase">Tổng đã chi</span>
-                            <div class="p-2 bg-red-50 rounded-lg text-red-500"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"></path></svg></div>
+                    <!-- Card 3 -->
+                    <div class="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm card-hover group cursor-pointer hover:border-red-200 transition">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Đã chi (Học kỳ)</span>
+                            <div class="p-2 bg-red-50 text-red-500 rounded-lg group-hover:bg-red-500 group-hover:text-white transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path></svg></div>
                         </div>
-                        <div class="text-3xl font-bold text-red-600" id="totalExpense">0 đ</div>
+                        <h3 class="text-3xl font-black tracking-tight text-slate-800" id="totalExpense">0 đ</h3>
                     </div>
                 </div>
             </div>
@@ -57,18 +71,20 @@ window.CLASS_FUND_COMPONENTS = {
     `,
 
     fundsList: `
-        <section class="container mx-auto px-4 mb-8">
-            <div class="bg-white rounded-xl shadow-md p-6 animate-fade-in-up delay-400">
-                <div class="flex items-center justify-between mb-6 border-b pb-4">
-                    <h2 class="text-2xl font-bold text-gray-800 flex items-center">
-                        <span class="mr-2">📋</span> Các khoản đang thu
-                    </h2>
-                    <span class="text-xs font-medium text-gray-400 bg-gray-50 px-2 py-1 rounded">Cập nhật: <span id="lastUpdate">-</span></span>
+        <section class="container mx-auto px-4 mb-12" id="funds-root-target">
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-10 animate-fade-in-up delay-500">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">Danh sách các khoản thu</h2>
+                        <p class="text-slate-500 mt-1">Vui lòng chọn một khoản để xem chi tiết và đóng tiền</p>
+                    </div>
+                    <div class="bg-slate-50 p-2 rounded-2xl flex items-center space-x-2">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Cập nhật: <span id="lastUpdate">-</span></span>
+                    </div>
                 </div>
-                <div id="activeFunds" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Skeleton -->
-                    <div class="animate-pulse bg-gray-100 h-32 rounded-xl"></div>
-                    <div class="animate-pulse bg-gray-100 h-32 rounded-xl"></div>
+                <div id="activeFunds" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- JS load -->
                 </div>
             </div>
         </section>
@@ -115,13 +131,22 @@ window.CLASS_FUND_COMPONENTS = {
                 </div>
 
                 <div class="flex-1 overflow-y-auto p-6 bg-white">
-                    <!-- Khu vực thanh toán -->
-                    <div id="paymentInstructions" class="bg-blue-50 border-l-4 border-blue-500 p-5 mb-8 rounded-r-xl shadow-sm animate-fade-in">
-                        <div class="flex flex-col md:flex-row gap-6 sticky top-0 bg-blue-50 z-10">
+                    <!-- Placeholder khi chưa chọn sinh viên -->
+                    <div id="paymentPlaceholder" class="bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl p-10 text-center mb-8 animate-pulse">
+                        <div class="w-16 h-16 bg-blue-100 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-700">Vui lòng chọn tên của bạn</h4>
+                        <p class="text-sm text-gray-500 mt-2">Tìm và bấm vào tên bạn trong danh sách bên dưới để lấy mã QR và thông tin chuyển khoản cá nhân.</p>
+                    </div>
+
+                    <!-- Khu vực thanh toán (Mặc định ẩn) -->
+                    <div id="paymentInstructions" class="hidden bg-blue-50 border-l-4 border-blue-500 p-5 mb-8 rounded-r-xl shadow-sm animate-fade-in">
+                        <div class="flex flex-col md:flex-row gap-6 sticky top-0">
                             <div class="flex-1">
                                 <h4 class="text-sm font-bold text-blue-800 uppercase tracking-widest mb-4 flex items-center">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    Thông tin chuyển khoản
+                                    Thông tin chuyển khoản của bạn
                                 </h4>
                                 <div class="space-y-4">
                                     <!-- Chủ tài khoản -->
@@ -218,5 +243,75 @@ window.CLASS_FUND_COMPONENTS = {
             <p class="text-gray-400 text-sm italic">&copy; 2026 Admin Panel - Hệ thống quản lý tài chính sinh viên</p>
             <p class="text-gray-500 text-[10px] mt-2 uppercase tracking-widest">Thiết kế cho sự minh bạch tối đa</p>
         </div>
+    `,
+
+    adminSidebar: `
+        <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-slate-900 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50 flex flex-col">
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-blue-500 rounded-lg">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path>
+                            <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight">Quỹ Lớp <span class="text-blue-500">Pro</span></span>
+                </div>
+                <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <nav class="flex-1 px-4 py-6 space-y-1">
+                <a href="dashboard.html" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl transition group" data-page="dashboard">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <span class="font-medium">Tổng quan</span>
+                </a>
+                <a href="funds.html" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl transition group" data-page="funds">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span class="font-medium">Quản lý Quỹ thu</span>
+                </a>
+                <a href="expenses.html" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl transition group" data-page="expenses">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span class="font-medium">Chi tiêu & Hóa đơn</span>
+                </a>
+                <a href="members.html" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl transition group" data-page="members">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <span class="font-medium">Danh sách lớp</span>
+                </a>
+            </nav>
+
+            <div class="p-6 mt-auto border-t border-slate-800">
+                <button onclick="handleLogout()" class="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    <span class="font-bold">Đăng xuất</span>
+                </button>
+            </div>
+        </aside>
+    `,
+
+    adminHeader: `
+        <header class="bg-white/80 backdrop-blur-md border-b sticky top-0 z-40 px-4 md:px-8 py-4 flex justify-between items-center transition-all duration-300">
+            <div class="flex items-center">
+                <button onclick="toggleSidebar()" class="md:hidden mr-4 p-2 rounded-lg hover:bg-gray-100 transition">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div id="breadcrumb" class="hidden sm:flex items-center text-sm text-gray-500">
+                    <span class="hover:text-primary cursor-pointer">Admin</span>
+                    <svg class="w-4 h-4 mx-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                    <span id="currentPageTitle" class="text-slate-900 font-bold">Bảng điều khiển</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2 md:space-x-4">
+                <div class="hidden md:flex flex-col text-right">
+                    <span class="text-sm font-bold text-slate-800" id="adminDisplayName">Admin</span>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Lớp trưởng</span>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-100 ring-2 ring-white">
+                    A
+                </div>
+            </div>
+        </header>
     `
 };

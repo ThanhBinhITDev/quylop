@@ -22,7 +22,6 @@ async function loadDashboardData() {
         updateRecentExpenses(data.recentExpenses);
     } catch (error) {
         console.error('Error loading dashboard data:', error);
-        // Silent error for automated polling, but alert on manual load if needed
     }
 }
 
@@ -67,51 +66,67 @@ function updateActiveFunds(funds) {
     `).join('');
 }
 
+// Store current fund data globally for easy access by personal QR logic
+let currentFundData = null;
+
 async function openPaymentModal(fundId) {
     const modal = document.getElementById('paymentModal');
     const modalContainer = document.getElementById('modalContainer');
     if (!modal) return;
 
     modal.classList.remove('hidden');
-    // Animation for scale
     setTimeout(() => {
         if (modalContainer) modalContainer.classList.remove('scale-95');
     }, 10);
 
     document.body.style.overflow = 'hidden';
 
+    // Reset UI state
+    const placeholder = document.getElementById('paymentPlaceholder');
+    const instructions = document.getElementById('paymentInstructions');
+    if (placeholder) placeholder.classList.remove('hidden');
+    if (instructions) instructions.classList.add('hidden');
+
+    const personalTag = document.getElementById('personalTag');
+    if (personalTag) personalTag.classList.add('hidden');
+
     try {
         const data = await api.get(`/public/funds/${fundId}`);
+        currentFundData = data;
         const fund = data.fund;
         const students = data.students;
 
         // Fill data
         document.getElementById('modalFundTitle').textContent = fund.title;
         document.getElementById('modalFundDesc').textContent = fund.description || 'Thu quỹ lớp định kỳ';
-        document.getElementById('modalAmountText').textContent = formatCurrency(fund.amount);
 
+        // Detailed info area
+        document.getElementById('modalAmountValue').textContent = formatCurrency(fund.amount);
         const description = `DONGQUY MSV ${fund.id}`;
-        document.getElementById('modalContentText').textContent = description;
+        document.getElementById('modalContentValue').textContent = description;
 
-        // Generate VietQR
-        const bankId = 'MB';
-        const accountNo = '0345678999';
-        const accountName = 'NGUYEN THANH BINH';
-        const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${fund.amount}&addInfo=${encodeURIComponent(description)}&accountName=${encodeURIComponent(accountName)}`;
-        document.getElementById('vietQrImg').src = qrUrl;
+        // Generate General VietQR
+        generateVietQR(fund.amount, description);
 
         const paidCount = students.filter(s => s.paid).length;
         document.getElementById('modalProgressText').textContent = `${paidCount}/${students.length}`;
 
         const listEl = document.getElementById('modalStudentList');
         listEl.innerHTML = students.map(s => `
-            <tr class="hover:bg-gray-50">
-                <td class="p-3 text-sm font-medium text-gray-800">${s.name}</td>
-                <td class="p-3 text-sm text-gray-500">${s.student_code}</td>
+            <tr class="hover:bg-blue-50 cursor-pointer transition group" onclick="selectStudentForPayment('${s.student_code}', '${s.name}')">
+                <td class="p-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-400 group-hover:bg-blue-500 group-hover:text-white transition">
+                            ${s.name.charAt(0).toUpperCase()}
+                        </div>
+                        <span class="text-sm font-medium text-gray-800 group-hover:text-blue-600 transition">${s.name}</span>
+                    </div>
+                </td>
+                <td class="p-3 text-sm text-gray-500 font-mono">${s.student_code}</td>
                 <td class="p-3">
                     ${s.paid ?
-                '<span class="px-2 py-1 text-xs font-bold bg-green-100 text-green-700 rounded-full">Đã đóng</span>' :
-                '<span class="px-2 py-1 text-xs font-bold bg-red-100 text-red-700 rounded-full">Chưa đóng</span>'
+                '<span class="px-2 py-1 text-[10px] font-bold bg-green-100 text-green-700 rounded-full">Đã đóng</span>' :
+                '<span class="px-2 py-1 text-[10px] font-bold bg-red-100 text-red-700 rounded-full">Chưa đóng</span>'
             }
                 </td>
             </tr>
@@ -119,8 +134,58 @@ async function openPaymentModal(fundId) {
 
     } catch (error) {
         console.error('Error loading fund details:', error);
-        alert('Lỗi khi tải thông tin chi tiết quỹ.');
     }
+}
+
+function selectStudentForPayment(studentCode, studentName) {
+    if (!currentFundData) return;
+
+    // Toggle UI visibility
+    const placeholder = document.getElementById('paymentPlaceholder');
+    const instructions = document.getElementById('paymentInstructions');
+    if (placeholder) placeholder.classList.add('hidden');
+    if (instructions) instructions.classList.remove('hidden');
+
+    // Update content and QR for specific student
+    const description = `DONGQUY ${studentCode} ${currentFundData.fund.id}`;
+    document.getElementById('modalContentValue').textContent = description;
+
+    // Show personal tag
+    const personalTag = document.getElementById('personalTag');
+    const personalName = document.getElementById('personalName');
+    if (personalTag && personalName) {
+        personalTag.classList.remove('hidden');
+        personalName.textContent = studentName;
+    }
+
+    // Refresh QR
+    generateVietQR(currentFundData.fund.amount, description);
+
+    // Highlight the content box
+    const contentBox = document.getElementById('modalContentValue').parentElement.parentElement;
+    contentBox.classList.add('ring-2', 'ring-blue-400');
+    setTimeout(() => contentBox.classList.remove('ring-2', 'ring-blue-400'), 1000);
+}
+
+function generateVietQR(amount, description) {
+    const bankId = 'MB';
+    const accountNo = '0345678999';
+    const accountName = 'NGUYEN THANH BINH';
+    const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(description)}&accountName=${encodeURIComponent(accountName)}`;
+    document.getElementById('vietQrImg').src = qrUrl;
+}
+
+function copyText(elementId, label) {
+    const text = document.getElementById(elementId).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        // Show a small organic toast or feedback
+        const btn = event.currentTarget;
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+        }, 1500);
+    });
 }
 
 function closeModal() {
