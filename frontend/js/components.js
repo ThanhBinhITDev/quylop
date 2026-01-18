@@ -1,18 +1,23 @@
 // File lưu trữ toàn bộ bố cục (Components Library)
 window.CLASS_FUND_COMPONENTS = {
     header: `
-        <nav class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
+        <nav class="fixed top-0 inset-x-0 z-50 glass border-b border-white/20 transition-all duration-300">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path>
-                        <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span class="text-xl font-bold text-gray-800">Quỹ Lớp</span>
+                    <div class="p-2 bg-blue-500 rounded-lg shadow-lg shadow-blue-500/20">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path>
+                            <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-slate-800 tracking-tight">Quỹ Lớp <span class="text-blue-500">Pro</span></span>
                 </div>
-                <a href="pages/login.html" class="bg-primary hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition duration-200 shadow-lg shadow-blue-200">
-                    Đăng nhập Admin
-                </a>
+                <div class="flex items-center space-x-4">
+                    <a href="pages/login.html" class="hidden sm:block text-slate-600 font-bold hover:text-primary transition text-sm">Cổng Admin</a>
+                    <a href="pages/login.html" class="bg-primary hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl transition duration-200 shadow-xl shadow-blue-500/20 font-bold text-sm">
+                        Đăng nhập
+                    </a>
+                </div>
             </div>
         </nav>
     `,
