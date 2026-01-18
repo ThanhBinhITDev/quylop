@@ -89,10 +89,10 @@ async function selectFund(fundId) {
             }
                 </td>
                 <td class="py-4 text-right">
-                    ${!s.paid ?
-                `<button onclick="confirmPayment(${fund.id}, ${s.id})" class="text-xs bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition">Xác nhận</button>` :
-                '<span class="text-xs text-gray-400">Hoàn tất</span>'
-            }
+                    <label class="switch">
+                        <input type="checkbox" ${s.paid ? 'checked' : ''} onchange="togglePayment(${fund.id}, ${s.id}, this)">
+                        <span class="slider round"></span>
+                    </label>
                 </td>
             </tr>
         `).join('');
@@ -114,15 +114,43 @@ async function createWeeklyFund() {
     }
 }
 
-async function confirmPayment(fundId, userId) {
-    if (!confirm('Xác nhận sinh viên đã đóng tiền?')) return;
+async function togglePayment(fundId, userId, checkbox) {
+    const isPaid = checkbox.checked;
+
+    // Disable checkbox temporarily
+    checkbox.disabled = true;
 
     try {
-        const response = await api.post(`/funds/${fundId}/contribute/${userId}`);
-        // Refresh Current Fund
-        await selectFund(fundId);
+        await api.post(`/funds/${fundId}/toggle/${userId}`, {
+            status: isPaid ? 'paid' : 'unpaid'
+        });
+
+        // Refresh Current Fund silently to update stats but keep the checkbox state if successful
+        const data = await api.get(`/funds/${fundId}`);
+        const students = data.students;
+
+        const paidCount = students.filter(s => s.paid).length;
+        const totalCount = students.length;
+        const progress = totalCount > 0 ? Math.round((paidCount / totalCount) * 100) : 0;
+
+        document.getElementById('progressText').textContent = `${progress}% (${paidCount}/${totalCount})`;
+        document.getElementById('progressBar').style.width = `${progress}%`;
+
+        // Update the status label in the same row
+        const row = checkbox.closest('tr');
+        const statusCell = row.cells[2];
+        if (isPaid) {
+            statusCell.innerHTML = '<span class="px-2 py-1 text-xs font-bold bg-green-100 text-green-700 rounded-full">Đã đóng</span>';
+        } else {
+            statusCell.innerHTML = '<span class="px-2 py-1 text-xs font-bold bg-red-100 text-red-700 rounded-full">Chưa đóng</span>';
+        }
+
     } catch (e) {
-        alert(e.message || 'Lỗi khi xác nhận đóng tiền.');
+        alert(e.message || 'Lỗi khi cập nhật trạng thái.');
+        // Revert checkbox state
+        checkbox.checked = !isPaid;
+    } finally {
+        checkbox.disabled = false;
     }
 }
 
@@ -130,4 +158,13 @@ function handleLogout() {
     api.clearToken();
     localStorage.removeItem('user');
     window.location.href = 'login.html';
+}
+
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return 'N/A';
+    return new Date(dateStr).toLocaleDateString('vi-VN');
 }

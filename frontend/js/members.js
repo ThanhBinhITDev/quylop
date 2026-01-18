@@ -42,7 +42,10 @@ async function loadMembers() {
                         ${m.role === 'admin' ? 'Admin' : 'Sinh viên'}
                     </span>
                 </td>
-                <td class="p-4 text-right space-x-2">
+                <td class="p-4 text-right space-x-1">
+                    <button onclick="viewMemberHistory(${m.id}, '${m.name}')" class="p-2 text-primary hover:text-blue-600 transition" title="Lịch sử đóng tiền">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h1v1H9v-1zm0 4h1v1H9v-1z"></path></svg>
+                    </button>
                     <button onclick="editMember(${JSON.stringify(m).replace(/"/g, '&quot;')})" class="p-2 text-blue-400 hover:text-blue-600 transition" title="Sửa">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                     </button>
@@ -118,6 +121,77 @@ async function deleteMember(id) {
         await loadMembers();
     } catch (e) {
         alert('Lỗi hệ thống khi xóa.');
+    }
+}
+
+// Payment History Logic
+async function viewMemberHistory(userId, userName) {
+    document.getElementById('historyMemberName').textContent = userName;
+    document.getElementById('historyModal').classList.remove('hidden');
+    document.getElementById('historyList').innerHTML = '<tr><td colspan="4" class="p-4 text-center">Đang tải...</td></tr>';
+
+    try {
+        const history = await api.get(`/members/${userId}/payments`);
+        const container = document.getElementById('historyList');
+
+        if (history.length === 0) {
+            container.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-gray-500 italic">Chưa có đợt thu quỹ nào được tạo.</td></tr>';
+            return;
+        }
+
+        container.innerHTML = history.map(h => `
+            <tr class="border-b hover:bg-gray-50">
+                <td class="p-3">
+                    <div class="font-medium text-gray-800">${h.title}</div>
+                    <div class="text-[10px] text-gray-400">Hạn: ${h.deadline ? new Date(h.deadline).toLocaleDateString('vi-VN') : '-'}</div>
+                </td>
+                <td class="p-3 text-sm text-gray-600">${h.required_amount.toLocaleString()}đ</td>
+                <td class="p-3">
+                    <span id="status-label-${userId}-${h.fund_id}" class="px-2 py-0.5 rounded-full ${h.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} text-[10px] font-bold">
+                        ${h.status === 'paid' ? 'Đã đóng' : 'Chưa đóng'}
+                    </span>
+                </td>
+                <td class="p-3 text-right">
+                    <label class="switch">
+                        <input type="checkbox" ${h.status === 'paid' ? 'checked' : ''} onchange="toggleQuickPay(${h.fund_id}, ${userId}, '${userName}', this)">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+            </tr>
+        `).join('');
+    } catch (e) {
+        alert('Lỗi khi tải lịch sử đóng tiền.');
+    }
+}
+
+function closeHistoryModal() {
+    document.getElementById('historyModal').classList.add('hidden');
+}
+
+async function toggleQuickPay(fundId, userId, userName, checkbox) {
+    const isPaid = checkbox.checked;
+    checkbox.disabled = true;
+
+    try {
+        await api.post(`/funds/${fundId}/toggle/${userId}`, {
+            status: isPaid ? 'paid' : 'unpaid'
+        });
+
+        // Update label in modal
+        const label = document.getElementById(`status-label-${userId}-${fundId}`);
+        if (isPaid) {
+            label.textContent = 'Đã đóng';
+            label.className = 'px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-[10px] font-bold';
+        } else {
+            label.textContent = 'Chưa đóng';
+            label.className = 'px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-[10px] font-bold';
+        }
+
+    } catch (e) {
+        alert(e.message || 'Lỗi khi cập nhật trạng thái.');
+        checkbox.checked = !isPaid;
+    } finally {
+        checkbox.disabled = false;
     }
 }
 

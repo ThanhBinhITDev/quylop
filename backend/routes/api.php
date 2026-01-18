@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/funds', [FundController::class, 'index']);
     Route::post('/funds/weekly', [FundController::class, 'createWeekly']);
     Route::get('/funds/{id}', [FundController::class, 'show']);
-    Route::post('/funds/{id}/contribute/{userId}', [FundController::class, 'contribute']);
+    Route::post('/funds/{id}/toggle/{userId}', [FundController::class, 'togglePayment']);
 
     // Expense Management
     Route::get('/expenses', [ExpenseController::class, 'index']);
@@ -46,4 +46,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/members', [MemberController::class, 'store']);
     Route::put('/members/{id}', [MemberController::class, 'update']);
     Route::delete('/members/{id}', [MemberController::class, 'destroy']);
+    Route::get('/members/{id}/payments', [MemberController::class, 'getPaymentHistory']);
 });

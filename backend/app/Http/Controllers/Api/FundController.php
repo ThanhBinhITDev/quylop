@@ -104,9 +104,9 @@ class FundController extends Controller
     }
 
     /**
-     * Xac nhan dong tiền cho sinh vien (Tu dong cong tien vao quy)
+     * Bat/Tat trang thai dong tiền cho sinh vien (Tu dong cap nhat so du)
      */
-    public function contribute(Request $request, $fundId, $userId)
+    public function togglePayment(Request $request, $fundId, $userId)
     {
         $fund = DB::table('funds')->where('id', $fundId)->first();
         if (!$fund) {
@@ -114,47 +114,58 @@ class FundController extends Controller
         }
 
         $user = DB::table('users')->where('id', $userId)->first();
+        $targetStatus = $request->input('status', 'paid'); // 'paid' hoặc 'unpaid'
+        
+        // Ma giao dich duy nhat cho cap (quy, user) de de tim kiem va xoa nêú can
+        $transactionCode = "FUND_{$fundId}_USER_{$userId}";
 
         DB::beginTransaction();
         try {
-            $exists = DB::table('fund_contributions')
-                ->where('fund_id', $fundId)
-                ->where('user_id', $userId)
-                ->first();
-
-            if ($exists) {
-                DB::table('fund_contributions')
-                    ->where('id', $exists->id)
-                    ->update([
-                        'status' => 'paid',
+            if ($targetStatus === 'paid') {
+                // MARK AS PAID
+                DB::table('fund_contributions')->updateOrInsert(
+                    ['fund_id' => $fundId, 'user_id' => $userId],
+                    [
                         'amount' => $fund->amount,
+                        'status' => 'paid',
+                        'paid_at' => now(),
+                        'updated_at' => now()
+                    ]
+                );
+
+                // Them giao dich neu chua co
+                $existsTx = DB::table('bank_transactions')->where('transaction_code', $transactionCode)->first();
+                if (!$existsTx) {
+                    DB::table('bank_transactions')->insert([
+                        'transaction_code' => $transactionCode,
+                        'amount' => $fund->amount,
+                        'description' => 'Thu quỹ: ' . $fund->title . ' - SV: ' . ($user ? $user->name : $userId),
+                        'transaction_date' => now(),
+                        'user_id' => $userId,
+                        'status' => 'processed',
+                        'created_at' => now(),
                         'updated_at' => now()
                     ]);
+                }
+                $msg = "Đã xác nhận đóng tiền thành công!";
             } else {
-                DB::table('fund_contributions')->insert([
-                    'fund_id' => $fundId,
-                    'user_id' => $userId,
-                    'amount' => $fund->amount,
-                    'status' => 'paid',
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
+                // MARK AS UNPAID
+                DB::table('fund_contributions')
+                    ->where('fund_id', $fundId)
+                    ->where('user_id', $userId)
+                    ->update([
+                        'status' => 'unpaid',
+                        'paid_at' => null,
+                        'updated_at' => now()
+                    ]);
+
+                // Xoa giao dich khoi so du
+                DB::table('bank_transactions')->where('transaction_code', $transactionCode)->delete();
+                $msg = "Đã hủy trạng thái đóng tiền.";
             }
 
-            // TU DONG TAO GIAO DICH NGAN HANG (De cong vao so du tong)
-            DB::table('bank_transactions')->insert([
-                'transaction_code' => 'THUQUY_' . $fundId . '_' . $userId . '_' . time(),
-                'amount' => $fund->amount,
-                'description' => 'Thu quỹ: ' . $fund->title . ' - SV: ' . ($user ? $user->name : $userId),
-                'transaction_date' => now(),
-                'user_id' => $userId,
-                'status' => 'processed',
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-
             DB::commit();
-            return response()->json(['message' => 'Đã xác nhận đóng tiền và cập nhật số dư thành công!']);
+            return response()->json(['message' => $msg]);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Lỗi hệ thống: ' . $e->getMessage()], 500);

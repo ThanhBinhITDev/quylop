@@ -39,3 +39,22 @@ File này được tạo ra theo yêu cầu của bạn để ghi lại toàn b�
 - **Public Dashboard:** Thiết kế trang chủ hiện đại, hiển thị trực quan số liệu tài chính để minh bạch hoá.
 - **Admin Dashboard:** Thiết kế Layout quản trị riêng kèm Sidebar chức năng.
 - **Auth:** Form Login đẹp mắt.
+
+---
+
+### 📅 Phiên làm việc: 18/01/2026
+**Người thực hiện:** Antigravity (AI Assistant)
+
+**1. Tính năng Quản lý Đóng tiền (UX Update):**
+- **Toggle Switches:** Thay thế nút xác nhận đóng tiền bằng nút gạt (Switch) kiểu iOS. Hỗ trợ bật/tắt trạng thái đóng tiền 2 chiều.
+- **Auto-Sync Balance:** Khi gạt nút, hệ thống tự động cộng/trừ số dư tổng và tạo/xoá giao dịch tương ứng để đảm bảo tính minh bạch.
+- **Payment History:** Thêm Modal xem lịch sử đóng tiền chi tiết cho từng thành viên.
+
+**2. Tối ưu hóa Frontend (Refactoring):**
+- **Componentization:** Băm nhỏ trang chủ thành các component (`Header`, `Hero`, `Stats`, `Footer`...).
+- **Premium Animations:** Thêm hiệu ứng `Fade-in Up`, `Skeleton Loading` và `Scale Animation` cho Modal.
+
+**3. Lỗi & Cách khắc phục (Issue Log):**
+- **Lỗi:** "Lỗi khi tải thành phần" (CORS/Fetch error) khi mở file trực tiếp bằng giao thức `file://`.
+- **Nguyên nhân:** Trình duyệt bảo mật chặn `fetch()` file cục bộ.
+- **Cách Fix:** Chuyển toàn bộ mã nguồn HTML của các component vào file JavaScript trung tâm `js/components.js`. Sử dụng biến `window.CLASS_FUND_COMPONENTS` để nạp trực tiếp mà không cần dùng `fetch()`. Kết quả: Trang web chạy mượt mà ngay cả khi mở file thủ công từ ổ cứng.

@@ -96,4 +96,28 @@ class MemberController extends Controller
             return response()->json(['message' => 'Không thể xóa thành viên này (có thể do ràng buộc dữ liệu).'], 500);
         }
     }
+
+    /**
+     * Lay lich su dong tien của 1 thanh vien
+     */
+    public function getPaymentHistory($id)
+    {
+        $funds = DB::table('funds')
+            ->leftJoin('fund_contributions', function($join) use ($id) {
+                $join->on('funds.id', '=', 'fund_contributions.fund_id')
+                    ->where('fund_contributions.user_id', '=', $id);
+            })
+            ->select(
+                'funds.id as fund_id',
+                'funds.title',
+                'funds.amount as required_amount',
+                'funds.deadline',
+                'fund_contributions.status',
+                'fund_contributions.paid_at'
+            )
+            ->orderBy('funds.created_at', 'desc')
+            ->get();
+
+        return response()->json($funds);
+    }
 }

@@ -1,13 +1,15 @@
 // Main JavaScript for homepage
 
-// Load dashboard data on page load
-document.addEventListener('DOMContentLoaded', async () => {
+// This function will be called by layout-loader.js after components are loaded
+async function initPage() {
+    console.log('Initializing page components...');
     await loadDashboardData();
     updateLastUpdateTime();
 
     // Refresh every 30 seconds
-    setInterval(loadDashboardData, 30000);
-});
+    if (window.dashboardInterval) clearInterval(window.dashboardInterval);
+    window.dashboardInterval = setInterval(loadDashboardData, 30000);
+}
 
 async function loadDashboardData() {
     try {
@@ -20,7 +22,7 @@ async function loadDashboardData() {
         updateRecentExpenses(data.recentExpenses);
     } catch (error) {
         console.error('Error loading dashboard data:', error);
-        showError('Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại backend.');
+        // Silent error for automated polling, but alert on manual load if needed
     }
 }
 
@@ -29,21 +31,22 @@ function updateBalance(data) {
     const totalIncome = document.getElementById('totalIncome');
     const totalExpense = document.getElementById('totalExpense');
 
-    currentBalance.textContent = formatCurrency(data.currentBalance);
-    totalIncome.textContent = formatCurrency(data.totalIncome);
-    totalExpense.textContent = formatCurrency(data.totalExpense);
+    if (currentBalance) currentBalance.textContent = formatCurrency(data.currentBalance);
+    if (totalIncome) totalIncome.textContent = formatCurrency(data.totalIncome);
+    if (totalExpense) totalExpense.textContent = formatCurrency(data.totalExpense);
 }
 
 function updateActiveFunds(funds) {
     const container = document.getElementById('activeFunds');
+    if (!container) return;
 
     if (!funds || funds.length === 0) {
-        container.innerHTML = '<p class="text-gray-500 text-center py-4">Hiện không có khoản thu nào</p>';
+        container.innerHTML = '<p class="text-gray-500 text-center py-4 col-span-2">Hiện không có khoản thu nào</p>';
         return;
     }
 
     container.innerHTML = funds.map(fund => `
-        <div onclick="openPaymentModal(${fund.id})" class="bg-gray-50 rounded-lg p-4 card-hover cursor-pointer border-2 border-transparent hover:border-blue-500">
+        <div onclick="openPaymentModal(${fund.id})" class="bg-gray-50 rounded-lg p-4 card-hover cursor-pointer border-2 border-transparent hover:border-blue-500 animate-fade-in-up">
             <div class="flex justify-between items-start">
                 <div class="flex-1">
                     <h3 class="font-semibold text-gray-800">${fund.title}</h3>
@@ -66,7 +69,15 @@ function updateActiveFunds(funds) {
 
 async function openPaymentModal(fundId) {
     const modal = document.getElementById('paymentModal');
+    const modalContainer = document.getElementById('modalContainer');
+    if (!modal) return;
+
     modal.classList.remove('hidden');
+    // Animation for scale
+    setTimeout(() => {
+        if (modalContainer) modalContainer.classList.remove('scale-95');
+    }, 10);
+
     document.body.style.overflow = 'hidden';
 
     try {
@@ -83,8 +94,6 @@ async function openPaymentModal(fundId) {
         document.getElementById('modalContentText').textContent = description;
 
         // Generate VietQR
-        // BANK_ID: ICB (VietinBank), MB (MB Bank), ...
-        // Format: https://img.vietqr.io/image/<BANK_ID>-<ACCOUNT_NO>-<TEMPLATE>.png?amount=<AMOUNT>&addInfo=<DESCRIPTION>&accountName=<NAME>
         const bankId = 'MB';
         const accountNo = '0345678999';
         const accountName = 'NGUYEN THANH BINH';
@@ -115,12 +124,19 @@ async function openPaymentModal(fundId) {
 }
 
 function closeModal() {
-    document.getElementById('paymentModal').classList.add('hidden');
-    document.body.style.overflow = 'auto';
+    const modal = document.getElementById('paymentModal');
+    const modalContainer = document.getElementById('modalContainer');
+    if (modalContainer) modalContainer.classList.add('scale-95');
+
+    setTimeout(() => {
+        if (modal) modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }, 200);
 }
 
 function updateRecentTransactions(transactions) {
     const container = document.getElementById('recentTransactions');
+    if (!container) return;
 
     if (!transactions || transactions.length === 0) {
         container.innerHTML = '<p class="text-gray-500 text-center py-4">Chưa có giao dịch nào</p>';
@@ -128,7 +144,7 @@ function updateRecentTransactions(transactions) {
     }
 
     container.innerHTML = transactions.map(tx => `
-        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg animate-fade-in-up">
             <div>
                 <p class="font-medium text-gray-800">${tx.description || 'Chuyển khoản'}</p>
                 <p class="text-xs text-gray-500">${formatDateTime(tx.transaction_date)}</p>
@@ -140,6 +156,7 @@ function updateRecentTransactions(transactions) {
 
 function updateRecentExpenses(expenses) {
     const container = document.getElementById('recentExpenses');
+    if (!container) return;
 
     if (!expenses || expenses.length === 0) {
         container.innerHTML = '<p class="text-gray-500 text-center py-4">Chưa có khoản chi nào</p>';
@@ -147,7 +164,7 @@ function updateRecentExpenses(expenses) {
     }
 
     container.innerHTML = expenses.map(expense => `
-        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg animate-fade-in-up">
             <div class="flex-1">
                 <p class="font-medium text-gray-800">${expense.title}</p>
                 <p class="text-xs text-gray-500">${formatDate(expense.expense_date)}</p>
@@ -158,27 +175,11 @@ function updateRecentExpenses(expenses) {
 }
 
 function updateLastUpdateTime() {
+    const el = document.getElementById('lastUpdate');
+    if (!el) return;
     const now = new Date();
-    const timeString = now.toLocaleTimeString('vi-VN', {
+    el.textContent = now.toLocaleTimeString('vi-VN', {
         hour: '2-digit',
         minute: '2-digit'
     });
-    document.getElementById('lastUpdate').textContent = timeString;
-}
-
-function showError(message) {
-    // Simple error display - can be enhanced with toast notifications
-    alert(message);
-}
-
-// Mock data for testing (will be replaced with real API calls)
-function getMockData() {
-    return {
-        currentBalance: 0,
-        totalIncome: 0,
-        totalExpense: 0,
-        activeFunds: [],
-        recentTransactions: [],
-        recentExpenses: []
-    };
 }
