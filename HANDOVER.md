@@ -23,6 +23,10 @@ Dự án được tách biệt thành 2 phần chính (Decoupled Architecture) k
 - **Styling:** Tailwind CSS (qua CDN để đơn giản hóa quá trình setup).
 - **Logic:** Vanilla JavaScript (không dùng framework phức tạp để dễ bảo trì).
 
+### 2.3 Cơ sở dữ liệu (Database Schema)
+- **Tài liệu chi tiết:** Xem tại [DATABASE_SCHEMA.md](./docs/DATABASE_SCHEMA.md).
+- **Mô tả:** Hệ thống sử dụng 6 bảng chính liên kết chặt chẽ để quản lý Thành viên, Đợt thu, Chi tiết đóng tiền, Khoản chi và Lịch sử giao dịch ngân hàng.
+
 ---
 
 ## 3. CẤU TRÚC THƯ MỤC CHI TIẾT
@@ -68,11 +72,19 @@ quylop/
 ### 🍱 Giai đoạn 3: Frontend Development
 1.  **Trang chủ (index.html):** 
     *   Hiển thị thẻ số dư.
-    *   **Modal Kiểm tra & Thanh toán:** Khi sinh viên nhấn vào một quỹ, sẽ hiện danh sách chi tiết và **Hướng dẫn thanh toán Online (QR/Chuyển khoản)**.
+    *   **Modal Kiểm tra & Thanh toán:** Khi sinh viên nhấn vào một quỹ, sẽ hiện danh sách chi tiết.
+    *   **Tích hợp VietQR API:** Tự động tạo mã QR thanh toán dựa trên số tiền, số tài khoản Admin và nội dung chuyển khoản động (VD: `DONGQUY MSV 1`). Sinh viên quét mã trên App ngân hàng sẽ tự điền toàn bộ thông tin.
 2.  **Dashboard Admin:** 
     *   Sidebar điều hướng chuyên nghiệp.
 3.  **Quản lý Thu Quỹ (10k/Tuần):** 
     *   Xác nhận sinh viên đã đóng (tiền mặt hoặc chuyển khoản) và hệ thống sẽ tự nhảy số dư.
+4.  **Quản lý Chi tiêu & Hóa đơn:**
+    *   Ghi nhận các khoản chi và upload ảnh hóa đơn minh chứng.
+    *   Tự động trừ tiền vào số dư tổng để đảm bảo số liệu thực tế.
+5.  **Quản lý Thành viên:**
+    *   Thêm, sửa, xóa sinh viên trong lớp.
+    *   **Mật khẩu mặc định:** Khi thêm sinh viên mới, mật khẩu đăng nhập của họ mặc định chính là Mã SV của họ (thuận tiện cho việc bàn giao).
+    *   Phân quyền: Hỗ trợ 2 quyền Admin và Student.
 4.  **API Service Layer (js/api.js):** Một Class chuyên biệt để xử lý tất cả các yêu cầu Fetch API, tự động đính kèm Token và xử lý lỗi.
 
 ### 📂 Giai đoạn 4: Tổ chức & Tối ưu
@@ -94,10 +106,9 @@ quylop/
 *   **Database:** Tên db là `quylop`, user `root`, pass trống.
 
 ### Những việc cần làm tiếp theo (To-do):
-1.  **Quản lý Chi tiêu:** Viết API và giao diện cho phần `expenses` để Admin có thể trừ tiền quỹ khi có hoạt động lớp.
-2.  **Upload Hóa đơn:** Tích hợp chức năng upload ảnh minh chứng cho mỗi khoản chi.
-3.  **Danh sách Thành viên:** CRUD cho bảng `users` để thêm sinh viên mới vào lớp.
-4.  **Export báo cáo:** Xuất file Excel tổng kết quỹ hàng tháng.
+1.  **Export báo cáo:** Xuất file Excel tổng kết quỹ hàng tháng để in ấn hoặc gửi phụ huynh.
+2.  **Gửi thông báo:** Tích hợp Telegram hoặc Zalo Bot để tự động nhắc nhở sinh viên chưa đóng tiền khi đến hạn deadline.
+3.  **Hệ thống phân quyền:** Hoàn thiện giao diện cho quyền `student` để sinh viên có trang cá nhân xem lịch sử đóng tiền của riêng mình.
 
 ---
 *Tài liệu này được soạn thảo bởi trợ lý AI Antigravity, sẵn sàng cho bất kỳ lập trình viên nào muốn tiếp nối sứ mệnh minh bạch tài chính lớp học.* 🎯

@@ -78,7 +78,18 @@ async function openPaymentModal(fundId) {
         document.getElementById('modalFundTitle').textContent = fund.title;
         document.getElementById('modalFundDesc').textContent = fund.description || 'Thu quỹ lớp định kỳ';
         document.getElementById('modalAmountText').textContent = formatCurrency(fund.amount);
-        document.getElementById('modalContentText').textContent = `DONGQUY [MASV] ${fund.id}`;
+
+        const description = `DONGQUY MSV ${fund.id}`;
+        document.getElementById('modalContentText').textContent = description;
+
+        // Generate VietQR
+        // BANK_ID: ICB (VietinBank), MB (MB Bank), ...
+        // Format: https://img.vietqr.io/image/<BANK_ID>-<ACCOUNT_NO>-<TEMPLATE>.png?amount=<AMOUNT>&addInfo=<DESCRIPTION>&accountName=<NAME>
+        const bankId = 'MB';
+        const accountNo = '0345678999';
+        const accountName = 'NGUYEN THANH BINH';
+        const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${fund.amount}&addInfo=${encodeURIComponent(description)}&accountName=${encodeURIComponent(accountName)}`;
+        document.getElementById('vietQrImg').src = qrUrl;
 
         const paidCount = students.filter(s => s.paid).length;
         document.getElementById('modalProgressText').textContent = `${paidCount}/${students.length}`;

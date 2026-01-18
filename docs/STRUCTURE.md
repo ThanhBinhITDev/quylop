@@ -5,6 +5,7 @@
 ```
 quylop/
 ├── backend/              → Laravel application (code chính)
+├── frontend/             → Giao diện người dùng tách biệt
 ├── database/             → Database backups và seeds
 │   └── backups/         → File SQL backup
 ├── docs/                 → Tài liệu dự án
@@ -41,6 +42,18 @@ backend/
 └── artisan             → Laravel CLI tool
 ```
 
+### 📂 `frontend/`
+Giao diện người dùng tách biệt:
+
+```
+frontend/
+├── index.html           → Trang chủ công khai (Public Landing Page)
+├── pages/               → Các trang chức năng (Login, Dashboard, Funds, Expenses, Members)
+├── js/                  → Logic xử lý API và UI (main.js, api.js, dashboard.js...)
+├── css/                 → Styles tùy chỉnh (style.css)
+└── README.md            → Hướng dẫn cài đặt frontend
+```
+
 ### 📂 `database/`
 Chứa database backups và file SQL:
 
@@ -63,7 +76,9 @@ Tài liệu dự án tập trung:
 docs/
 ├── README.md            → Copy từ README gốc
 ├── DEVELOPMENT_LOG.md   → Nhật ký phát triển
-└── STRUCTURE.md         → File này - giải thích cấu trúc
+├── STRUCTURE.md         → File này - giải thích cấu trúc
+├── DATABASE_SCHEMA.md   → Tài liệu chi tiết các bảng SQL
+└── HANDOVER.md          → Tài liệu bàn giao dự án
 ```
 
 ### 📂 `scripts/`
@@ -72,6 +87,7 @@ Batch scripts tiện ích:
 ```
 scripts/
 ├── start-server.bat        → Khởi động Laravel dev server
+├── start-frontend.bat      → Khởi động live server cho frontend
 ├── start-all.bat           → Khởi động đầy đủ (XAMPP + Laravel)
 ├── backup-database.bat     → Backup database với timestamp
 ├── restore-database.bat    → Restore database từ file
@@ -95,6 +111,7 @@ cd scripts
 ### File đặt tên
 - **Batch scripts:** `kebab-case.bat` (VD: `start-server.bat`)
 - **PHP files:** `PascalCase.php` cho classes (VD: `UserController.php`)
+- **JS files:** `kebab-case.js` (VD: `api.js`)
 - **Blade views:** `kebab-case.blade.php` (VD: `admin-dashboard.blade.php`)
 
 ### Thư mục không commit vào Git
@@ -111,9 +128,8 @@ cd scripts
 |------|----------|
 | `README.md` | Tài liệu chính cho GitHub |
 | `backend/.env` | Cấu hình database, app key |
-| `backend/routes/web.php` | Định nghĩa routes |
-| `backend/composer.json` | PHP dependencies |
-| `backend/package.json` | JavaScript dependencies |
+| `backend/routes/api.php` | Định nghĩa endpoints API |
+| `frontend/js/api.js` | Lớp giao tiếp API cho Frontend |
 
 ---
 
@@ -123,7 +139,7 @@ cd scripts
 ```powershell
 # Bước 1: Start MySQL trong XAMPP
 # Bước 2: Chạy server
-.\scripts\start-server.bat
+.\scripts\start-all.bat
 ```
 
 ### 2. Làm việc với database
@@ -136,20 +152,6 @@ cd scripts
 
 # Restore nếu có sự cố
 .\scripts\restore-database.bat
-```
-
-### 3. Code mới
-```
-backend/app/Http/Controllers/  → Tạo controller mới
-backend/resources/views/       → Tạo view mới
-backend/routes/web.php         → Thêm route
-```
-
-### 4. Commit code
-```bash
-git add .
-git commit -m "Mô tả thay đổi"
-git push
 ```
 
 ---

@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\PublicController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FundController;
 use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\MemberController;
 
 // Public Routes
 Route::get('/dashboard', [PublicController::class, 'getDashboardData']);
@@ -39,4 +40,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/expenses', [ExpenseController::class, 'index']);
     Route::post('/expenses', [ExpenseController::class, 'store']);
     Route::delete('/expenses/{id}', [ExpenseController::class, 'destroy']);
+
+    // Member Management
+    Route::get('/members', [MemberController::class, 'index']);
+    Route::post('/members', [MemberController::class, 'store']);
+    Route::put('/members/{id}', [MemberController::class, 'update']);
+    Route::delete('/members/{id}', [MemberController::class, 'destroy']);
 });

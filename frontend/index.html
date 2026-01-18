@@ -151,15 +151,21 @@
                             <p class="text-xs text-blue-700 mt-1 italic">Vui lòng chuyển khoản đúng số tiền và nội dung
                                 bên dưới để Admin dễ xác nhận.</p>
                             <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                                <div class="bg-white p-3 rounded border border-blue-200">
+                                <div class="bg-white p-3 rounded border border-blue-200 space-y-2">
                                     <p>🏛 Ngân hàng: <strong>MB Bank</strong></p>
                                     <p>👤 Chủ TK: <strong>Thanh Bình IT (Lớp trưởng)</strong></p>
                                     <p>🔢 Số TK: <strong>0345 678 999</strong></p>
-                                </div>
-                                <div class="bg-white p-3 rounded border border-blue-200">
                                     <p>💰 Số tiền: <strong id="modalAmountText" class="text-red-600">0 đ</strong></p>
                                     <p>📝 Nội dung: <strong id="modalContentText" class="text-blue-600 italic">DONGQUY
-                                            [Mã SV] [Tên Quỹ]</strong></p>
+                                            [Mã SV]</strong></p>
+                                </div>
+                                <div
+                                    class="bg-white p-2 rounded border border-blue-200 flex flex-col items-center justify-center">
+                                    <p class="mb-1 font-bold text-gray-600 text-[10px] uppercase">Quét mã để thanh toán
+                                        nhanh</p>
+                                    <img id="vietQrImg" src="" alt="VietQR"
+                                        class="w-28 h-28 object-contain border p-1 rounded bg-gray-50">
+                                    <p class="mt-1 text-[9px] text-gray-400 italic">VietQR tự động điền thông tin</p>
                                 </div>
                             </div>
                         </div>

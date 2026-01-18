@@ -10,13 +10,16 @@ class PublicController extends Controller
 {
     public function getDashboardData()
     {
-        // 1. Tinh Tong Thu 
-        $totalIncome = DB::table('bank_transactions')->where('status', 'processed')->sum('amount') ?? 0;
+        // 1. Tinh Tong Thu (Chi lay cac giao dich so duong)
+        $totalIncome = DB::table('bank_transactions')
+            ->where('status', 'processed')
+            ->where('amount', '>', 0)
+            ->sum('amount') ?? 0;
 
-        // 2. Tinh Tong Chi
+        // 2. Tinh Tong Chi (Lay tu bang expenses)
         $totalExpense = DB::table('expenses')->sum('amount') ?? 0;
 
-        // 3. So du
+        // 3. So du thuc te (Thu - Chi)
         $currentBalance = $totalIncome - $totalExpense;
 
         // 4. Lay danh sach quy dang mo
