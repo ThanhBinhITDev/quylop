@@ -124,22 +124,23 @@ async function handleFundSubmit(e) {
     e.preventDefault();
 
     const submitBtn = document.getElementById('submitBtn');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Đang xử lý...';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Đang xử lý...';
+    }
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
 
-    // Clean data format if needed
+    // Fix empty deadline
+    if (!data.deadline) delete data.deadline;
     if (!data.description) delete data.description;
 
     try {
-        // Log payload for debugging
         console.log('Creating fund:', data);
-
         const response = await api.post('/funds', data);
-        alert(response.message || 'Tạo quỹ thành công!');
 
+        alert(response.message || 'Tạo quỹ thành công!');
         closeFundModal();
         e.target.reset();
 
@@ -148,20 +149,19 @@ async function handleFundSubmit(e) {
 
         // Auto select new fund
         selectFund(currentFundId);
-
     } catch (error) {
         console.error('Create fund error:', error);
-        alert(error.message || 'Lỗi khi tạo quỹ. Vui lòng thử lại.');
+        alert(error.message || 'Lỗi khi tạo quỹ.');
     } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Lưu đợt thu';
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Lưu đợt thu';
+        }
     }
 }
 
 async function togglePayment(fundId, userId, checkbox) {
     const isPaid = checkbox.checked;
-
-    // Disable checkbox temporarily
     checkbox.disabled = true;
 
     try {
@@ -169,10 +169,9 @@ async function togglePayment(fundId, userId, checkbox) {
             status: isPaid ? 'paid' : 'unpaid'
         });
 
-        // Refresh Current Fund silently to update stats but keep the checkbox state if successful
+        // Refresh stats
         const data = await api.get(`/funds/${fundId}`);
         const students = data.students;
-
         const paidCount = students.filter(s => s.paid).length;
         const totalCount = students.length;
         const progress = totalCount > 0 ? Math.round((paidCount / totalCount) * 100) : 0;
@@ -180,18 +179,15 @@ async function togglePayment(fundId, userId, checkbox) {
         document.getElementById('progressText').textContent = `${progress}% (${paidCount}/${totalCount})`;
         document.getElementById('progressBar').style.width = `${progress}%`;
 
-        // Update the status label in the same row
+        // Update label
         const row = checkbox.closest('tr');
         const statusCell = row.cells[2];
-        if (isPaid) {
-            statusCell.innerHTML = '<span class="px-2 py-1 text-xs font-bold bg-green-100 text-green-700 rounded-full">Đã đóng</span>';
-        } else {
-            statusCell.innerHTML = '<span class="px-2 py-1 text-xs font-bold bg-red-100 text-red-700 rounded-full">Chưa đóng</span>';
-        }
+        statusCell.innerHTML = isPaid
+            ? '<span class="px-2 py-1 text-xs font-bold bg-green-100 text-green-700 rounded-full">Đã đóng</span>'
+            : '<span class="px-2 py-1 text-xs font-bold bg-red-100 text-red-700 rounded-full">Chưa đóng</span>';
 
     } catch (e) {
-        alert(e.message || 'Lỗi khi cập nhật trạng thái.');
-        // Revert checkbox state
+        alert(e.message || 'Lỗi trạng thái.');
         checkbox.checked = !isPaid;
     } finally {
         checkbox.disabled = false;
@@ -208,13 +204,37 @@ function formatCurrency(amount) {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
 }
 
+function formatDate(dateStr) {
+    if (!dateStr) return 'N/A';
+    return new Date(dateStr).toLocaleDateString('vi-VN');
+}
+
+// Modal Functions - Cleaned and Unique
 function openFundModal() {
-    document.getElementById('modalTitle').textContent = 'Tạo đợt thu mới';
-    document.getElementById('fundForm').reset();
-    document.querySelector('input[name="id"]').value = '';
-    document.getElementById('fundModal').classList.remove('hidden');
+    console.log('Opening Fund Modal (Fixed)...');
+
+    const modal = document.getElementById('fundModal');
+    if (!modal) {
+        console.error('Modal element not found!');
+        return;
+    }
+
+    // Reset Form
+    const fundForm = document.getElementById('fundForm');
+    if (fundForm) fundForm.reset();
+
+    // Set Title
+    const titleEl = document.getElementById('modalTitle');
+    if (titleEl) titleEl.textContent = 'Tạo đợt thu mới';
+
+    // Clear ID for new creation
+    const idInput = document.querySelector('input[name="id"]');
+    if (idInput) idInput.value = '';
+
+    modal.classList.remove('hidden');
 }
 
 function closeFundModal() {
-    document.getElementById('fundModal').classList.add('hidden');
+    const modal = document.getElementById('fundModal');
+    if (modal) modal.classList.add('hidden');
 }
