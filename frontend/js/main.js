@@ -56,7 +56,7 @@ function updateActiveFunds(funds) {
                     </div>
                 </div>
                 <div class="flex flex-col items-end space-y-2">
-                    <span class="px-3 py-1 text-xs font-semibold rounded-full ${fund.type === 'weekly' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}">
+                    <span class="px-3 py-1 text-xs font-semibold rounded-full ${fund.type === 'weekly' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800'}">
                         ${fund.type === 'weekly' ? 'Hàng tuần' : fund.type === 'monthly' ? 'Hàng tháng' : 'Một lần'}
                     </span>
                     <button class="text-xs bg-primary text-white px-2 py-1 rounded hover:bg-blue-600 transition">Xem danh sách</button>

@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Fund Management
     Route::get('/funds', [FundController::class, 'index']);
+    Route::post('/funds', [FundController::class, 'store']);
     Route::post('/funds/weekly', [FundController::class, 'createWeekly']);
     Route::get('/funds/{id}', [FundController::class, 'show']);
     Route::post('/funds/{id}/toggle/{userId}', [FundController::class, 'togglePayment']);

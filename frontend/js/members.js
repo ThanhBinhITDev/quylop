@@ -38,7 +38,7 @@ async function loadMembers() {
                 <td class="p-4 text-sm text-gray-600">${m.phone || '-'}</td>
                 <td class="p-4 text-sm text-gray-600">${m.email}</td>
                 <td class="p-4 text-sm">
-                    <span class="px-2 py-1 rounded-full text-xs font-bold ${m.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600'}">
+                    <span class="px-2 py-1 rounded-full text-xs font-bold ${m.role === 'admin' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600'}">
                         ${m.role === 'admin' ? 'Admin' : 'Sinh viên'}
                     </span>
                 </td>

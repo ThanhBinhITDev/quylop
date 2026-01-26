@@ -21,6 +21,37 @@ class FundController extends Controller
     }
 
     /**
+     * Tao quy tuy chinh (Custom Fund)
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'amount' => 'required|numeric|min:0',
+            'deadline' => 'nullable|date',
+            'type' => 'required|in:once,weekly,monthly',
+            'description' => 'nullable|string'
+        ]);
+
+        $fundId = DB::table('funds')->insertGetId([
+            'title' => $request->title,
+            'amount' => $request->amount,
+            'deadline' => $request->deadline,
+            'description' => $request->description,
+            'type' => $request->type,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        $fund = DB::table('funds')->where('id', $fundId)->first();
+
+        return response()->json([
+            'message' => 'Đã tạo quỹ mới thành công!',
+            'fund' => $fund
+        ]);
+    }
+
+    /**
      * Tao quy moi (Weekly 10k)
      */
     public function createWeekly()
